@@ -88,14 +88,15 @@ builder:
   #   - RAILS_MASTER_KEY
 
 # Use a different ssh user than root
-  ssh:
-   user: deploy
+ssh:
+  user: deploy
 
 # Use accessory services (secrets come from .kamal/secrets).
-# accessories:
+accessories:
   postgres:
-    image: postgres:16
-    roles: web
+    image: postgres:16.4
+    roles:
+      - web
     env:
       clear:
         POSTGRES_USER: "blueprint"
