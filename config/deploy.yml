@@ -48,7 +48,7 @@ env:
 
     # Match this to any external database server to configure Active Record correctly
     # Use blueprint-db for a db accessory server on same machine via local kamal docker network.
-    # DB_HOST: 192.168.0.2
+    DB_HOST: 172.236.1.204
 
     # Log everything from Rails
     # RAILS_LOG_LEVEL: debug
@@ -95,8 +95,8 @@ ssh:
 accessories:
   postgres:
     image: postgres:16.4
-    roles:
-      - web
+    host: 172.236.1.204
+    port: 5432
     env:
       clear:
         POSTGRES_USER: "blueprint"

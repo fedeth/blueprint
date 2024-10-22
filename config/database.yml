@@ -86,6 +86,7 @@ production:
     database: blueprint_production
     username: blueprint
     password: <%= ENV["BLUEPRINT_DATABASE_PASSWORD"] %>
+    host: <%= ENV['DB_HOST'] %>
   cache:
     <<: *primary_production
     database: blueprint_production_cache
