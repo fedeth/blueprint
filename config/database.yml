@@ -20,11 +20,11 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: postgres
   password: <%= ENV['POSTGRES_PASSWORD'] %>
+  host: postgres_db
 
 development:
   <<: *default
   database: blueprint_development
-  host: postgres_db
 
   # The specified database role being used to connect to PostgreSQL.
   # To create additional roles in PostgreSQL see `$ createuser --help`.
