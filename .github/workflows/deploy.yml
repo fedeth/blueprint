@@ -2,7 +2,8 @@ name: Deploy on remote machine
 
 on:
   push:
-    - main
+    branches:
+      - main
 
 jobs:
   deploy_app:
@@ -26,6 +27,10 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       -
+        name: Add remote host to known_hosts
+        run: |
+          ssh-keyscan -H 172.236.19.159 >> ~/.ssh/known_hosts
+      -
         name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -37,4 +42,4 @@ jobs:
           KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-        run: bundle exec kamal deploy --version=D_VERSION
+        run: bundle exec kamal deploy --version=$D_VERSION
