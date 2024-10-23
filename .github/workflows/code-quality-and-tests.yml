@@ -30,8 +30,7 @@ jobs:
     env:
       # Set the DB environment variables for the Rails app to connect to PostgreSQL
       RAILS_ENV: test
-      DB_USERNAME: postgres
-      DB_PASSWORD: password
+      DATABASE_URL: "postgres://postgres:password@localhost:5432/blueprint_test"
 
     steps:
       - name: Checkout code
@@ -39,18 +38,6 @@ jobs:
 
       - name: Install PostgreSQL client
         run: sudo apt-get install -y postgresql-client
-
-      - name: Debug network
-        run: |
-          ping -c 3 postgres_db
-          nslookup postgres_db
-
-      - name: Wait for PostgreSQL to be ready
-        run: |
-          until pg_isready -h postgres_db -p 5432; do
-            echo "Waiting for PostgreSQL...";
-            sleep 10;  # Increase the sleep interval to give PostgreSQL more time to fully initialize
-          done 
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
