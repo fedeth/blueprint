@@ -48,7 +48,7 @@ jobs:
         run: bundle install --jobs 4 --retry 3
 
       - name: Set up the database
-        run: bundle exec rake db:create db:schema:load
+        run: bundle exec rake db:schema:load
 
       - name: Run Rubocop
         run: bundle exec rubocop
