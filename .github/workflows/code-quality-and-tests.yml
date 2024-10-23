@@ -1,0 +1,65 @@
+name: Code Quality and Unit Tests
+
+on:
+  push:
+    branches-ignore:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  run_checks:
+    runs-on: ubuntu-22.04
+
+    services:
+      postgres_db:
+        image: postgres:16.4
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: blueprint_test
+        options: >
+          --health-cmd="pg_isready" 
+          --health-interval=5s 
+          --health-timeout=5s 
+          --health-retries=3
+
+    env:
+      # Set the DB environment variables for the Rails app to connect to PostgreSQL
+      RAILS_ENV: test
+      DB_USERNAME: postgres
+      DB_PASSWORD: password
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Install dependencies
+        run: bundle install --jobs 4 --retry 3
+
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          until pg_isready -h postgres_db -p 5432; do
+            echo "Waiting for PostgreSQL...";
+            sleep 5;
+          done
+
+      - name: Set up the database
+        run: bundle exec rake db:create db:schema:load
+
+      - name: Run Rubocop
+        run: bundle exec rubocop
+
+      - name: Run Brakeman
+        run: bundle exec brakeman
+
+      - name: Run Unit Tests
+        run: bundle exec rails test
