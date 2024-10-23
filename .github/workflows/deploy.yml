@@ -27,12 +27,6 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       -
-        name: Remove old host key
-        run: ssh-keygen -R 172.236.19.159
-      -
-        name: Add remote host to known_hosts
-        run: ssh-keyscan -H 172.236.19.159 >> ~/.ssh/known_hosts
-      -
         name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
