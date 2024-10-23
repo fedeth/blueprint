@@ -21,11 +21,12 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
           POSTGRES_DB: blueprint_test
-        options: >
-          --health-cmd="pg_isready" 
-          --health-interval=5s 
-          --health-timeout=5s 
-          --health-retries=3
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     env:
       # Set the DB environment variables for the Rails app to connect to PostgreSQL
       RAILS_ENV: test
