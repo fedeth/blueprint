@@ -1,0 +1,60 @@
+name: Code Quality and Unit Tests
+
+on:
+  push:
+    branches-ignore:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  run_checks:
+    runs-on: ubuntu-22.04
+
+    services:
+      postgres_db:
+        image: postgres:15
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: blueprint_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      # Set the DB environment variables for the Rails app to connect to PostgreSQL
+      RAILS_ENV: test
+      DATABASE_URL: "postgres://postgres:password@localhost:5432/blueprint_test"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install PostgreSQL client
+        run: sudo apt-get install -y postgresql-client
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Install dependencies
+        run: bundle install --jobs 4 --retry 3
+
+      - name: Set up the database
+        run: bundle exec rake db:schema:load
+
+      - name: Run Rubocop
+        run: bundle exec rubocop
+
+      - name: Run Brakeman
+        run: bundle exec brakeman
+
+      - name: Run Unit Tests
+        run: bundle exec rails test

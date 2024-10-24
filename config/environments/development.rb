@@ -71,5 +71,5 @@ Rails.application.configure do
   # config.generators.apply_rubocop_autocorrect_after_generate!
 
   # Whitelist web-console ips for interactive debugging from the browser
-  config.web_console.whitelisted_ips = '192.168.0.0/16'
+  config.web_console.whitelisted_ips = "192.168.0.0/16"
 end
