@@ -1,9 +1,6 @@
 name: Code Quality and Unit Tests
 
 on:
-  push:
-    branches-ignore:
-      - main
   pull_request:
     branches:
       - main
@@ -35,9 +32,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Install PostgreSQL client
-        run: sudo apt-get install -y postgresql-client
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
