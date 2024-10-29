@@ -3,6 +3,7 @@ services:
     build:
       context: ..
       dockerfile: 'dev/Dockerfile'
+    tty: true
     environment:
       - RAILS_ENV=development
       - RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
