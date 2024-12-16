@@ -2,7 +2,7 @@ source "https://rubygems.org"
 
 # Use main development branch of Rails
 # gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 8.0.0.rc1"
+gem "rails", "~> 8.0.1"
 
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
